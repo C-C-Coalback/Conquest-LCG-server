@@ -13,4 +13,5 @@ while True:
         print(string)
         for i in range(len(string)):
             print(string[i])
+        connection.send(bytes("Confirm received", 'UTF-8'))
         break
