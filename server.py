@@ -23,9 +23,15 @@ class Client(Thread):
             self.sock.send(bytes("Confirm received", 'UTF-8'))
             self.stored_message = message.split(sep="#")
             print("Stored message:", self.stored_message)
+            if message == "QUIT":
+                self.running = False
+                self.sock.close()
 
 server_socket.listen(20)
 print ('server started and listening')
 while True:
     connection, address = server_socket.accept()
     Client(connection, address)
+    keep_server = input("Contine accepting clients? (y/n)")
+    if keep_server == "n":
+        break
