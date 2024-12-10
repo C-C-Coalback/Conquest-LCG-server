@@ -10,10 +10,14 @@ class Client(Thread):
         self.sock = class_socket
         self.addr = class_address
         self.stored_message = ""
+        self.running = True
         self.start()
 
     def run(self):
-        while 1:
+        Thread(target=self.recv).start()
+
+    def recv(self):
+        while self.running:
             message = self.sock.recv(1024).decode()
             print('Client sent:', message)
             self.sock.send(bytes("Confirm received", 'UTF-8'))
