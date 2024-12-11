@@ -28,6 +28,8 @@ class Client(Thread):
     def recv(self):
         while self.running:
             message = self.sock.recv(1024).decode()
+            if not message:
+                break
             print('Client sent:', message)
             self.stored_message = message.split(sep="#")
             print("Stored message:", self.stored_message)
