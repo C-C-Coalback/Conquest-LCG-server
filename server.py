@@ -15,12 +15,20 @@ class Client(Thread):
 
     def run(self):
         Thread(target=self.recv).start()
+        Thread(target=self.send_info).start()
+
+    def send_info(self):
+        try:
+            while self.running:
+                message = input("Enter message:")
+                self.sock.send(bytes(message, 'UTF-8'))
+        except OSError:
+            print("Socket closed")
 
     def recv(self):
         while self.running:
             message = self.sock.recv(1024).decode()
             print('Client sent:', message)
-            self.sock.send(bytes("Confirm received", 'UTF-8'))
             self.stored_message = message.split(sep="#")
             print("Stored message:", self.stored_message)
             if message == "QUIT":
@@ -32,6 +40,6 @@ print ('server started and listening')
 while True:
     connection, address = server_socket.accept()
     Client(connection, address)
-    keep_server = input("Contine accepting clients? (y/n)")
+    keep_server = "n"
     if keep_server == "n":
         break
