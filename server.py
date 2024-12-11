@@ -28,7 +28,7 @@ class Client(Thread):
                                "Bigga is Betta/Cybork Body/Nazdreg's Flash Gitz#Bigga is Betta/"
                                "Cybork Body/Nazdreg's Flash Gitz/Nazdreg's Flash Gitz"
                                "/Kraktoof Hall/Nazdreg's Flash Gitz/Nazdreg's Flash Gitz"
-                               "/#Nazdreg(0!Ready!Hale)#Nazdreg(0!Ready!Hale)"
+                               "#Nazdreg(0!Ready!Hale)#Nazdreg(0!Ready!Hale)"
                                "#NONE#NONE#NONE#NONE#NONE#NONE#NONE#NONE#NONE#NONE"
                                "#NONE#NONE#NONE#NONE")
                 self.sock.send(bytes(message, 'UTF-8'))
