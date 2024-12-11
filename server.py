@@ -22,7 +22,8 @@ class Client(Thread):
             while self.running:
                 message = input("Enter message:")
                 if message == "TEST BIG":
-                    message = ("10246#4#8#Plannum/Tarrus/Osus IV/ Y'varn/Ferrin/Barlus/Iridial#Nazdreg's Flash Gitz"
+                    message = ("10246#4#8#Plannum/Tarrus/Osus IV/Y'varn/Ferrin/Barlus/Iridial"
+                               "#True/True/True/True/True/False/False#Nazdreg's Flash Gitz"
                                "/Nazdreg's Flash Gitz/Nazdreg's Flash Gitz/Kraktoof Hall/"
                                "Bigga is Betta/Cybork Body/Nazdreg's Flash Gitz#Bigga is Betta/"
                                "Cybork Body/Nazdreg's Flash Gitz/Nazdreg's Flash Gitz"
