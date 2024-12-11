@@ -21,6 +21,15 @@ class Client(Thread):
         try:
             while self.running:
                 message = input("Enter message:")
+                if message == "TEST BIG":
+                    message = ("10246#4#8#Plannum/Tarrus/Osus IV/ Y'varn/Ferrin/Barlus/Iridial#Nazdreg's Flash Gitz"
+                               "/Nazdreg's Flash Gitz/Nazdreg's Flash Gitz/Kraktoof Hall/"
+                               "Bigga is Betta/Cybork Body/Nazdreg's Flash Gitz#Bigga is Betta/"
+                               "Cybork Body/Nazdreg's Flash Gitz/Nazdreg's Flash Gitz"
+                               "/Kraktoof Hall/Nazdreg's Flash Gitz/Nazdreg's Flash Gitz"
+                               "/#Nazdreg(0!Ready!Hale)#Nazdreg(0!Ready!Hale)"
+                               "#NONE#NONE#NONE#NONE#NONE#NONE#NONE#NONE#NONE#NONE"
+                               "#NONE#NONE#NONE#NONE")
                 self.sock.send(bytes(message, 'UTF-8'))
         except OSError:
             print("Socket closed")
