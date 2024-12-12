@@ -37,8 +37,12 @@ class Game(Thread):
                 self.c.acquire()
                 self.c.notify_all()
                 self.stored_message_p_one = message.split(sep="#")
+                string_for_further_use = self.stored_message_p_one
                 print("Stored message:", self.stored_message_p_one)
                 self.c.release()
+                if len(string_for_further_use) > 0:
+                    if string_for_further_use[0] == "LOAD DECK":
+                        print("Begin loading deck")
                 if message == "QUIT":
                     self.running = False
                     self.client_one_sock.close()
@@ -80,7 +84,6 @@ class Client(Thread):
 
     def run(self):
         Thread(target=self.recv).start()
-        # Thread(target=self.send_info).start()
 
     def get_stored_message(self):
         self.c.acquire()
