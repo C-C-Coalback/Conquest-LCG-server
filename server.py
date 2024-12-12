@@ -4,7 +4,8 @@ import pygame
 
 server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 server_socket.bind(('localhost', 8089))
-
+game_array = []
+client_array = []
 class Game(Thread):
     def __init__(self, client_one):
         Thread.__init__(self)
@@ -23,6 +24,7 @@ class Client(Thread):
         self.sock = class_socket
         self.addr = class_address
         self.stored_message = ""
+        self.current_board_state = ""
         self.running = True
         self.c = Condition()
         self.start()
@@ -41,7 +43,11 @@ class Client(Thread):
     def send_info(self):
         try:
             while self.running:
-                message = input("Enter message:")
+                # self.c.acquire()
+                # self.c.notify_all()
+                self.current_board_state = input("Enter message:")
+                message = self.current_board_state
+                # self.c.release()
                 if message == "TEST BIG":
                     message = ("10246#4#8#Plannum/Tarrus/Osus IV/Y'varn/Ferrin/Barlus/Iridial"
                                "#True/True/True/True/True/False/False#Nazdreg's Flash Gitz"
@@ -77,8 +83,6 @@ class Client(Thread):
 
 server_socket.listen(20)
 print ('server started and listening')
-client_array = []
-game_array = []
 while True:
     connection, address = server_socket.accept()
     new_client = Client(connection, address)
