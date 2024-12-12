@@ -12,3 +12,8 @@ The Conquest-LCG-server will be a server that handles all games of Conquest curr
   -Closing a game when it is complete.
 
 This does NOT include deckbuilding; this is a process that can be done entirely client side.
+
+Update: might include deckbuilding, will see.
+
+Currently the server can send a string containing the current game state, then the client can render it.
+The actual game is not yet working.
