@@ -29,8 +29,9 @@ class Client(Thread):
                                "Cybork Body/Nazdreg's Flash Gitz/Nazdreg's Flash Gitz"
                                "/Kraktoof Hall/Nazdreg's Flash Gitz/Nazdreg's Flash Gitz"
                                "#Nazdreg(B!E!2)/Nazdreg's Flash Gitz(H!E!1)#Nazdreg(H!E!3)/Nazdreg's Flash Gitz(H!R!2)"
-                               "#NONE#NONE#NONE#NONE#NONE#NONE#NONE#NONE#NONE#NONE"
-                               "#NONE#NONE#NONE#NONE")
+                               "#Chaos Fanatics(H!E!0)/Possessed(H!R!2)/Chaos Fanatics(H!R!0)#NONE#NONE#Shoota Mob(H!R!0)#NONE#NONE#Goff Boyz(H!R!1)"
+                               "#Alpha Legion Infiltrator(H!R!0)/Goff Boyz(H!R!0)/Goff Boyz(H!R!1)#Goff Boyz(H!E!1)#NONE"
+                               "#NONE#NONE#Rogue Trader(H!R!0)#NONE")
                 self.sock.send(bytes(message, 'UTF-8'))
         except OSError:
             print("Socket closed")
