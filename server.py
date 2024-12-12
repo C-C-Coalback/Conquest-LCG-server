@@ -5,8 +5,9 @@ import pygame
 server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 server_socket.bind(('localhost', 8089))
 
-class Game:
+class Game(Thread):
     def __init__(self, client_one):
+        Thread.__init__(self)
         self.client_one_sock = client_one.sock
         self.client_one_addr = client_one.addr
         self.stored_message_p_one = client_one.stored_message
@@ -15,13 +16,6 @@ class Game:
 
     def print_stored_1(self):
         print(self.stored_message_p_one)
-
-class LittleGame:
-    def __init__(self, client_one):
-        self.client_one = client_one
-
-    def get_stored_1(self):
-        return self.client_one.stored_message
 
 class Client(Thread):
     def __init__(self, class_socket, class_address):
