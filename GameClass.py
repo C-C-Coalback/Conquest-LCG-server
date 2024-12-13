@@ -36,20 +36,29 @@ class Game(Thread):
         self.p2 = PlayerClass.Player("Bob", 2)
         Thread(target=self.recv).start()
         Thread(target=self.send_current_board_state_loop).start()
-        Thread(target=self.manual_update_board_loop).start()
+        # Thread(target=self.manual_update_board_loop).start()
         self.wait_deck_1()
         self.p1.setup_player(self.stored_deck_1, planets_in_play_list)
         self.p2.setup_player(self.stored_deck_1, planets_in_play_list)
         self.p2.toggle_turn()
         self.p2.toggle_initiative()
         Thread(target=self.auto_update_board_loop).start()
+        Thread(target=self.auto_update_stored_1).start()
         Thread(target=self.temp_loop).start()
 
     def play_game(self):
         pass
 
     def temp_loop(self):
-        self.p1.print_has_turn()
+        self.p1.print_position_active()
+
+    def auto_update_stored_1(self):
+        while self.running:
+            pygame.time.wait(200)
+            self.c.acquire()
+            self.c.notify_all()
+            self.p1.set_active_position(self.stored_message_p_one)
+            self.c.release()
 
     def print_stored_1(self):
         print(self.stored_message_p_one)

@@ -5,6 +5,7 @@ class Player:
     def __init__(self, name, number):
         self.number = number
         self.name_player = name
+        self.position_activated = []
         self.has_initiative = True
         self.has_turn = True
         self.retreating = False
@@ -39,16 +40,24 @@ class Player:
     def get_turn(self):
         return self.has_turn
 
-    def print_has_turn(self):
+    def print_position_active(self):
         while True:
-            input("")
-            print("Player", self.number, "turn value:", self.has_turn)
+            t = input("")
+            if t == "STOP":
+                break
+            print("Player", self.number, "active position:", self.position_activated)
 
     def toggle_initiative(self):
         self.has_initiative = not self.has_initiative
 
     def shuffle_deck(self):
         shuffle(self.deck)
+
+    def get_active_position(self):
+        return self.position_activated
+
+    def set_active_position(self, new_val):
+        self.position_activated = new_val
 
     def get_resources(self):
         return self.resources
