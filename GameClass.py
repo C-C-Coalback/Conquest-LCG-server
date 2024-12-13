@@ -3,7 +3,7 @@ import PlayerClass
 import random
 import pygame
 from UseInits import *
-
+from Phases import DeployPhase
 
 def create_planets(planet_array_objects):
     planet_names = []
@@ -45,6 +45,7 @@ class Game(Thread):
         Thread(target=self.auto_update_board_loop).start()
         Thread(target=self.auto_update_stored_1).start()
         Thread(target=self.temp_loop).start()
+        DeployPhase.deploy_phase(self.p1, self.p2)
 
     def play_game(self):
         pass

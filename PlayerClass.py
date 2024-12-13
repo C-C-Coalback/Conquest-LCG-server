@@ -1,5 +1,6 @@
 import FindCard
 from random import shuffle
+import pygame
 
 class Player:
     def __init__(self, name, number):
@@ -40,6 +41,29 @@ class Player:
     def get_turn(self):
         return self.has_turn
 
+    def set_turn(self, new_turn):
+        self.has_turn = new_turn
+
+    def get_phase(self):
+        return self.phase
+
+    def set_phase(self, new_phase):
+        self.phase = new_phase
+
+    def take_deploy_turn(self):
+        while True:
+            pygame.time.wait(125)
+            current_active = self.position_activated
+            if len(current_active) > 0:
+                if current_active[0] == "PASS":
+                    print("PASS NEEDED")
+                    return True
+                if len(current_active) > 1:
+                    if current_active[1] == "Hand":
+                        print("Card needs to be deployed")
+                        print("Position of card: Player", current_active[0], "Hand pos:", current_active[2])
+                        return False
+
     def print_position_active(self):
         while True:
             t = input("")
@@ -49,6 +73,9 @@ class Player:
 
     def toggle_initiative(self):
         self.has_initiative = not self.has_initiative
+
+    def get_initiative(self):
+        return self.has_initiative
 
     def shuffle_deck(self):
         shuffle(self.deck)
