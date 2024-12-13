@@ -62,6 +62,8 @@ class Player:
 
     def get_hq_for_message(self):
         message = "#"
+        if len(self.headquarters) == 0:
+            message += "NONE"
         for i in range(len(self.headquarters)):
             message += self.headquarters[i].get_name()
             c_t = self.headquarters[i].get_card_type()
@@ -87,7 +89,43 @@ class Player:
                 message += "/"
         return message
 
+    def get_all_planets_for_message(self):
+        message = ""
+        planet_num = 1
+        while planet_num < 8:
+            message += self.get_one_planet_for_message(planet_num)
+            planet_num += 1
+        return message
 
+
+    def get_one_planet_for_message(self, planet_pos):
+        message = "#"
+        if len(self.cards_in_play[planet_pos]) == 0:
+            message += "NONE"
+        for i in range(len(self.cards_in_play[planet_pos])):
+            message += self.cards_in_play[planet_pos][i].get_name()
+            c_t = self.cards_in_play[planet_pos][i].get_card_type()
+            message += "("
+            if c_t == "Warlord":
+                if self.cards_in_play[planet_pos][i].get_bloodied_state():
+                    message += "B"
+                else:
+                    message += "H"
+            else:
+                message += "H"
+            message += "!"
+            if self.cards_in_play[planet_pos][i].get_ready():
+                message += "R"
+            else:
+                message += "E"
+            message += "!"
+            damage = 0
+            # if c_t == "Warlord" or c_t == "Army" or c_t == "Token":
+            damage += self.cards_in_play[planet_pos][i].get_damage()
+            message += str(damage) + ")"
+            if i != len(self.cards_in_play[planet_pos]) - 1:
+                message += "/"
+        return message
 
     def draw_card(self):
         if not self.deck:
