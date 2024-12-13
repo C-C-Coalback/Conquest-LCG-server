@@ -36,6 +36,30 @@ class Player:
     def shuffle_deck(self):
         shuffle(self.deck)
 
+    def get_resources(self):
+        return self.resources
+
+    def get_planets_in_play_for_message(self):
+        message = "#"
+        for i in range(7):
+            message += self.cards_in_play[0][i]
+            if i != 6:
+                message += "/"
+        message += "#"
+        for i in range(7):
+            message += str(self.planets_in_play[i])
+            if i != 6:
+                message += "/"
+        return message
+
+    def get_hand_for_message(self):
+        message = "#"
+        for i in range(len(self.cards)):
+            message += self.cards[i]
+            if i != len(self.cards) - 1:
+                message += "/"
+        return message
+
     def draw_card(self):
         if not self.deck:
             print("Deck is empty, you lose!")
