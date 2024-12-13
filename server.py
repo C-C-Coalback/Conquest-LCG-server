@@ -126,6 +126,8 @@ class Game(Thread):
             message += self.p1.get_planets_in_play_for_message()
             message += self.p1.get_hand_for_message()
             message += self.p2.get_hand_for_message()
+            message += self.p1.get_hq_for_message()
+            message += self.p2.get_hq_for_message()
             print(message)
             #self.current_board_state = message
             self.c.release()

@@ -60,6 +60,35 @@ class Player:
                 message += "/"
         return message
 
+    def get_hq_for_message(self):
+        message = "#"
+        for i in range(len(self.headquarters)):
+            message += self.headquarters[i].get_name()
+            c_t = self.headquarters[i].get_card_type()
+            message += "("
+            if c_t == "Warlord":
+                if self.headquarters[i].get_bloodied_state():
+                    message += "B"
+                else:
+                    message += "H"
+            else:
+                message += "H"
+            message += "!"
+            if self.headquarters[i].get_ready():
+                message += "R"
+            else:
+                message += "E"
+            message += "!"
+            damage = 0
+            if c_t == "Warlord" or c_t == "Army" or c_t == "Token":
+                damage += self.headquarters[i].get_damage()
+            message += str(damage) + ")"
+            if i != len(self.headquarters) - 1:
+                message += "/"
+        return message
+
+
+
     def draw_card(self):
         if not self.deck:
             print("Deck is empty, you lose!")
