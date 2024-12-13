@@ -36,6 +36,14 @@ class Player:
     def toggle_turn(self):
         self.has_turn = not self.has_turn
 
+    def get_turn(self):
+        return self.has_turn
+
+    def print_has_turn(self):
+        while True:
+            input("")
+            print("Player", self.number, "turn value:", self.has_turn)
+
     def toggle_initiative(self):
         self.has_initiative = not self.has_initiative
 

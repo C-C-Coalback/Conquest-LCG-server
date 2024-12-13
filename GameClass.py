@@ -43,9 +43,13 @@ class Game(Thread):
         self.p2.toggle_turn()
         self.p2.toggle_initiative()
         Thread(target=self.auto_update_board_loop).start()
+        Thread(target=self.temp_loop).start()
 
     def play_game(self):
         pass
+
+    def temp_loop(self):
+        self.p1.print_has_turn()
 
     def print_stored_1(self):
         print(self.stored_message_p_one)
@@ -120,6 +124,7 @@ class Game(Thread):
             message += self.p1.get_all_planets_for_message()
             message += self.p2.get_all_planets_for_message()
             print(message)
+            self.p1.toggle_turn()
             self.current_board_state = message
             self.c.release()
 
