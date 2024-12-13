@@ -1,7 +1,29 @@
 import socket
 from threading import *
-
+from Inits import OrksCardsInit, ChaosCardsInit, NeutralCardsInit, FinalCardInit, PlanetCardsInit
+import PlayerClass
 import pygame.time
+import random
+
+orks_card_array = OrksCardsInit.orks_cards_init()
+chaos_card_array = ChaosCardsInit.chaos_cards_init()
+neutral_card_array = NeutralCardsInit.neutral_cards_init()
+final_card_array = FinalCardInit.final_card_init()
+card_array = orks_card_array + chaos_card_array + neutral_card_array + final_card_array
+planet_array = PlanetCardsInit.planet_cards_init()
+faction_wheel = ["Astra Militarum", "Space Marines", "Tau", "Eldar",
+                 "Dark Eldar", "Chaos", "Orks", "Astra Militarum", "Space Marines"]
+
+def create_planets(planet_array_objects):
+    planet_names = []
+    for i in range(10):
+        string = planet_array_objects[i].get_name()
+        planet_names.append(string)
+    random.shuffle(planet_names)
+    planets_in_play_return = []
+    for i in range(7):
+        planets_in_play_return.append(planet_names[i])
+    return planets_in_play_return
 
 # import pygame
 
@@ -16,18 +38,34 @@ class Game(Thread):
         self.client_one_sock = client_one.sock
         self.client_one_addr = client_one.addr
         self.stored_message_p_one = client_one.stored_message
+        self.stored_deck_1 = None
+        self.p1 = None
         self.current_board_state = ""
         self.running = True
         self.c = Condition()
         self.start()
 
     def run(self):
+        planets_in_play_list = create_planets(planet_array)
+        self.p1 = PlayerClass.Player("Abe", 1)
         Thread(target=self.recv).start()
         Thread(target=self.send_current_board_state_loop).start()
         Thread(target=self.manual_update_board_loop).start()
+        self.wait_deck()
+        self.p1.setup_player(self.stored_deck_1, planets_in_play_list)
 
     def print_stored_1(self):
         print(self.stored_message_p_one)
+
+    def wait_deck(self):
+        temp = True
+        while temp:
+            pygame.time.wait(100)
+            self.c.acquire()
+            self.c.notify_all()
+            if self.stored_deck_1 is not None:
+                temp = False
+            self.c.release()
 
     def print_current_board_state(self):
         print(self.current_board_state)
@@ -48,6 +86,7 @@ class Game(Thread):
                 if len(string_for_further_use) > 0:
                     if string_for_further_use[0] == "LOAD DECK":
                         print("Begin loading deck")
+                        self.stored_deck_1 = string_for_further_use
                 if message == "QUIT":
                     self.c.acquire()
                     self.c.notify_all()
