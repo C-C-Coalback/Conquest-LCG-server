@@ -1,5 +1,5 @@
 import FindCard
-
+from random import shuffle
 
 class Player:
     def __init__(self, name, number):
@@ -23,10 +23,23 @@ class Player:
     def setup_player(self, deck_list, planet_array):
         self.headquarters.append(FindCard.find_card(deck_list[1]))
         self.deck = deck_list[2:]
+        self.shuffle_deck()
         self.cards_in_play[0] = planet_array
         self.resources = self.headquarters[0].get_starting_resources()
+        for i in range(self.headquarters[0].get_starting_cards()):
+            self.draw_card()
         print(self.resources)
         print(self.deck)
         print(self.cards_in_play)
+        print(self.cards)
 
+    def shuffle_deck(self):
+        shuffle(self.deck)
+
+    def draw_card(self):
+        if not self.deck:
+            print("Deck is empty, you lose!")
+        else:
+            self.cards.append(self.deck[0])
+            del self.deck[0]
 

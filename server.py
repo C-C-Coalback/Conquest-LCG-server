@@ -51,13 +51,13 @@ class Game(Thread):
         Thread(target=self.recv).start()
         Thread(target=self.send_current_board_state_loop).start()
         Thread(target=self.manual_update_board_loop).start()
-        self.wait_deck()
+        self.wait_deck_1()
         self.p1.setup_player(self.stored_deck_1, planets_in_play_list)
 
     def print_stored_1(self):
         print(self.stored_message_p_one)
 
-    def wait_deck(self):
+    def wait_deck_1(self):
         temp = True
         while temp:
             pygame.time.wait(100)
