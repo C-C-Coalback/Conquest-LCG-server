@@ -33,6 +33,12 @@ class Player:
         print(self.cards_in_play)
         print(self.cards)
 
+    def toggle_turn(self):
+        self.has_turn = not self.has_turn
+
+    def toggle_initiative(self):
+        self.has_initiative = not self.has_initiative
+
     def shuffle_deck(self):
         shuffle(self.deck)
 
