@@ -18,5 +18,5 @@ while True:
     HoldingArrays.client_array[i].stored_message = "test"
     Thread(target=HoldingArrays.client_array[i].recv).start()
     i += 1
-    if i == 1:
+    if i == 2:
         break

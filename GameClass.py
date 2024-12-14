@@ -154,7 +154,8 @@ class Client:
         self.c.notify_all()
         message = ""
         for i in range(len(HoldingArrays.client_array)):
-            message += "#" + HoldingArrays.client_array[i].get_display_name()
+            if HoldingArrays.client_array[i].get_display_name() != "":
+                message += "#" + HoldingArrays.client_array[i].get_display_name()
         message = "LOBBY" + message
         self.sock.send(bytes(message, "UTF-8"))
 
