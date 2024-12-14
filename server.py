@@ -8,7 +8,7 @@ game_array = []
 client_array = []
 server_socket.listen(20)
 
-print ('server started and listening')
+print('server started and listening')
 while True:
     connection, address = server_socket.accept()
     new_client = Client(connection, address)
