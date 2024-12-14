@@ -206,6 +206,14 @@ class Client:
                 if len(split_message) == 2:
                     if split_message[0] == "SET NAME":
                         self.set_display_name(split_message[1])
+                    if split_message[0] == "REFUSE REQUEST":
+                        for i in range(len(HoldingArrays.client_array)):
+                            if HoldingArrays.client_array[i].get_display_name() == split_message[1]:
+                                print("Refusing received request")
+                                self.currently_received_request = False
+                                HoldingArrays.client_array[i].sent_a_req_and_is_awaiting_respone = False
+                                HoldingArrays.client_array[i].sock.send(bytes("REQUEST WAS REFUSED", "UTF-8"))
+                                break
                     if split_message[0] == "REQUEST MATCH" and not self.sent_a_req_and_is_awaiting_response \
                             and not self.currently_received_request:
                         if split_message[1] != self.display_name:
@@ -214,6 +222,7 @@ class Client:
                                     print("Sending game request to", HoldingArrays.client_array[i].get_display_name())
                                     HoldingArrays.client_array[i].send_game_request(self.display_name)
                                     self.sent_a_req_and_is_awaiting_response = True
+                                    break
 
         except ConnectionResetError:
             print("Existing connection closed by host")
