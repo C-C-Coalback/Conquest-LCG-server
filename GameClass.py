@@ -153,13 +153,6 @@ class Client(Thread):
     def run(self):
         Thread(target=self.recv).start()
 
-    def get_stored_message(self):
-        self.c.acquire()
-        self.c.notify_all()
-        message = self.stored_message
-        self.c.release()
-        return message
-
     def recv(self):
         try:
             while self.running:
