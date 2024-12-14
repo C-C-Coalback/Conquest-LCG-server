@@ -5,6 +5,7 @@ import pygame
 from UseInits import *
 from Phases import DeployPhase
 
+
 def create_planets(planet_array_objects):
     planet_names = []
     for i in range(10):
@@ -15,6 +16,7 @@ def create_planets(planet_array_objects):
     for i in range(7):
         planets_in_play_return.append(planet_names[i])
     return planets_in_play_return
+
 
 class Game(Thread):
     def __init__(self, client_one):
@@ -36,7 +38,6 @@ class Game(Thread):
         self.p2 = PlayerClass.Player("Bob", 2)
         Thread(target=self.recv).start()
         Thread(target=self.send_current_board_state_loop).start()
-        # Thread(target=self.manual_update_board_loop).start()
         self.wait_deck_1()
         self.p1.setup_player(self.stored_deck_1, planets_in_play_list)
         self.p2.setup_player(self.stored_deck_1, planets_in_play_list)
@@ -138,25 +139,6 @@ class Game(Thread):
             self.current_board_state = message
             self.c.release()
 
-    def manual_update_board_loop(self):
-        while self.running:
-            message = input("Enter text:")
-            if message == "TEST BIG":
-                message = ("10246#4#8#Plannum/Tarrus/Osus IV/Y'varn/Ferrin/Barlus/Iridial"
-                           "#True/True/True/True/True/False/False#Nazdreg's Flash Gitz"
-                           "/Nazdreg's Flash Gitz/Nazdreg's Flash Gitz/Kraktoof Hall/"
-                           "Bigga is Betta/Cybork Body/Nazdreg's Flash Gitz#Bigga is Betta/"
-                           "Cybork Body/Nazdreg's Flash Gitz/Nazdreg's Flash Gitz"
-                           "/Kraktoof Hall/Nazdreg's Flash Gitz/Nazdreg's Flash Gitz"
-                           "#Nazdreg(B!E!2)/Nazdreg's Flash Gitz(H!E!1)#Nazdreg(H!E!3)/Nazdreg's Flash Gitz(H!R!2)"
-                           "#Chaos Fanatics(H!E!0)/Possessed(H!R!2)/Chaos Fanatics(H!R!0)#NONE#NONE#Shoota Mob(H!R!0)#NONE#NONE#Goff Boyz(H!R!1)"
-                           "#Alpha Legion Infiltrator(H!R!0)/Goff Boyz(H!R!0)/Goff Boyz(H!R!1)#Goff Boyz(H!E!1)#NONE"
-                           "#NONE#NONE#Rogue Trader(H!R!0)#NONE")
-            self.c.acquire()
-            self.c.notify_all()
-            self.current_board_state = message
-            self.c.release()
-            print(self.running)
 
 class Client(Thread):
     def __init__(self, class_socket, class_address):
