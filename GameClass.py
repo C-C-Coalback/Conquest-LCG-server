@@ -6,6 +6,7 @@ from UseInits import *
 from Phases import DeployPhase
 import HoldingArrays
 
+
 def create_planets(planet_array_objects):
     planet_names = []
     for i in range(10):
@@ -146,6 +147,7 @@ class Client:
         self.addr = class_address
         self.stored_message = ""
         self.display_name = ""
+        self.waiting_on_request = ""
         self.running = True
         self.c = Condition()
 
@@ -196,7 +198,9 @@ class Client:
                     self.send_lobby()
                 if len(self.stored_message) == 2:
                     if self.stored_message[0] == "SET NAME":
-                        print("GOT HERE")
                         self.set_display_name(self.stored_message[1])
+                    if self.stored_message[0] == "REQUEST MATCH":
+                        if self.stored_message[1] != self.display_name:
+                            print("Sending game request.")
         except ConnectionResetError:
             print("Existing connection closed by host")
