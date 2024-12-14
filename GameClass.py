@@ -168,6 +168,10 @@ class Client:
         self.sock.send(bytes(self.display_name, "UTF-8"))
         self.c.release()
 
+    def send_game_request(self, name):
+        message = "GAME INVITE#" + name
+        self.sock.send(bytes(message, "UTF-8"))
+
     def set_display_name(self, name):
         self.display_name = name
 
@@ -183,7 +187,8 @@ class Client:
                 print('Client sent:', message)
                 self.c.acquire()
                 self.c.notify_all()
-                self.stored_message = message.split(sep="#")
+                split_message = message.split(sep="#")
+                self.stored_message = split_message
                 print("Stored message:", self.stored_message)
                 self.c.release()
                 if message == "QUIT":
@@ -196,11 +201,15 @@ class Client:
                     self.send_display_name()
                 if message == "REQUEST LOBBY":
                     self.send_lobby()
-                if len(self.stored_message) == 2:
-                    if self.stored_message[0] == "SET NAME":
-                        self.set_display_name(self.stored_message[1])
-                    if self.stored_message[0] == "REQUEST MATCH":
-                        if self.stored_message[1] != self.display_name:
-                            print("Sending game request.")
+                if len(split_message) == 2:
+                    if split_message[0] == "SET NAME":
+                        self.set_display_name(split_message[1])
+                    if split_message[0] == "REQUEST MATCH":
+                        if split_message[1] != self.display_name:
+                            for i in range(len(HoldingArrays.client_array)):
+                                if HoldingArrays.client_array[i].get_display_name() == split_message[1]:
+                                    print("Sending game request to", HoldingArrays.client_array[i].get_display_name())
+                                    HoldingArrays.client_array[i].send_game_request(self.display_name)
+
         except ConnectionResetError:
             print("Existing connection closed by host")
