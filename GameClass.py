@@ -211,8 +211,12 @@ class Client:
                             if HoldingArrays.client_array[i].get_display_name() == split_message[1]:
                                 print("Refusing received request")
                                 self.currently_received_request = False
-                                HoldingArrays.client_array[i].sent_a_req_and_is_awaiting_respone = False
-                                HoldingArrays.client_array[i].sock.send(bytes("REQUEST WAS REFUSED", "UTF-8"))
+                                HoldingArrays.client_array[i].sent_a_req_and_is_awaiting_response = False
+                                self.sock.send(bytes("REQUEST WAS REFUSED", "UTF-8"))
+                                print(self.currently_received_request)
+                                print(self.sent_a_req_and_is_awaiting_response)
+                                print(HoldingArrays.client_array[i].currently_received_request)
+                                print(HoldingArrays.client_array[i].sent_a_req_and_is_awaiting_response)
                                 break
                     if split_message[0] == "REQUEST MATCH" and not self.sent_a_req_and_is_awaiting_response \
                             and not self.currently_received_request:
