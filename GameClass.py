@@ -148,6 +148,7 @@ class Client:
         self.stored_message = ""
         self.display_name = ""
         self.sent_a_req_and_is_awaiting_response = False
+        self.currently_received_request = False
         self.running = True
         self.c = Condition()
 
@@ -170,6 +171,7 @@ class Client:
 
     def send_game_request(self, name):
         message = "GAME INVITE#" + name
+        self.currently_received_request = True
         self.sock.send(bytes(message, "UTF-8"))
 
     def set_display_name(self, name):
@@ -204,7 +206,8 @@ class Client:
                 if len(split_message) == 2:
                     if split_message[0] == "SET NAME":
                         self.set_display_name(split_message[1])
-                    if split_message[0] == "REQUEST MATCH" and not self.sent_a_req_and_is_awaiting_response:
+                    if split_message[0] == "REQUEST MATCH" and not self.sent_a_req_and_is_awaiting_response \
+                            and not self.currently_received_request:
                         if split_message[1] != self.display_name:
                             for i in range(len(HoldingArrays.client_array)):
                                 if HoldingArrays.client_array[i].get_display_name() == split_message[1]:
