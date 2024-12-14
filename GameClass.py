@@ -146,6 +146,7 @@ class Client(Thread):
         self.sock = class_socket
         self.addr = class_address
         self.stored_message = ""
+        self.display_name = ""
         self.running = True
         self.c = Condition()
         self.start()
@@ -154,7 +155,22 @@ class Client(Thread):
         Thread(target=self.recv).start()
 
     def send_lobby(self):
-        self.sock.send(bytes("LOBBY#BOB#STEVE", "UTF-8"))
+        message = ""
+        if self.display_name != "":
+            message += self.display_name + "#"
+        message += "BOB#STEVE"
+        message = "LOBBY#" + message
+        self.sock.send(bytes(message, "UTF-8"))
+
+    def send_display_name(self):
+        self.c.acquire()
+        self.c.notify_all()
+        print(self.display_name)
+        self.sock.send(bytes(self.display_name, "UTF-8"))
+        self.c.release()
+
+    def set_display_name(self, name):
+        self.display_name = name
 
     def recv(self):
         try:
@@ -174,7 +190,13 @@ class Client(Thread):
                 if message == "BEGIN GAME":
                     self.running = False
                     Game(self)
+                if message == "REQUEST OWN USERNAME":
+                    self.send_display_name()
                 if message == "REQUEST LOBBY":
                     self.send_lobby()
+                if len(self.stored_message) == 2:
+                    if self.stored_message[0] == "SET NAME":
+                        print("GOT HERE")
+                        self.set_display_name(self.stored_message[1])
         except ConnectionResetError:
             print("Existing connection closed by host")
