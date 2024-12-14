@@ -153,6 +153,9 @@ class Client(Thread):
     def run(self):
         Thread(target=self.recv).start()
 
+    def send_lobby(self):
+        self.sock.send(bytes("LOBBY#BOB#STEVE", "UTF-8"))
+
     def recv(self):
         try:
             while self.running:
@@ -171,5 +174,7 @@ class Client(Thread):
                 if message == "BEGIN GAME":
                     self.running = False
                     Game(self)
+                if message == "REQUEST LOBBY":
+                    self.send_lobby()
         except ConnectionResetError:
             print("Existing connection closed by host")
