@@ -140,19 +140,14 @@ class Game(Thread):
             self.c.release()
 
 
-class Client(Thread):
+class Client:
     def __init__(self, class_socket, class_address):
-        Thread.__init__(self)
         self.sock = class_socket
         self.addr = class_address
         self.stored_message = ""
         self.display_name = ""
         self.running = True
         self.c = Condition()
-        self.start()
-
-    def run(self):
-        Thread(target=self.recv).start()
 
     def send_lobby(self):
         message = ""

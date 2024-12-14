@@ -2,6 +2,7 @@ import FindCard
 from random import shuffle
 import pygame
 
+
 class Player:
     def __init__(self, name, number):
         self.number = number
