@@ -147,7 +147,7 @@ class Client:
         self.addr = class_address
         self.stored_message = ""
         self.display_name = ""
-        self.waiting_on_request = ""
+        self.sent_a_req_and_is_awaiting_response = False
         self.running = True
         self.c = Condition()
 
@@ -204,12 +204,13 @@ class Client:
                 if len(split_message) == 2:
                     if split_message[0] == "SET NAME":
                         self.set_display_name(split_message[1])
-                    if split_message[0] == "REQUEST MATCH":
+                    if split_message[0] == "REQUEST MATCH" and not self.sent_a_req_and_is_awaiting_response:
                         if split_message[1] != self.display_name:
                             for i in range(len(HoldingArrays.client_array)):
                                 if HoldingArrays.client_array[i].get_display_name() == split_message[1]:
                                     print("Sending game request to", HoldingArrays.client_array[i].get_display_name())
                                     HoldingArrays.client_array[i].send_game_request(self.display_name)
+                                    self.sent_a_req_and_is_awaiting_response = True
 
         except ConnectionResetError:
             print("Existing connection closed by host")
