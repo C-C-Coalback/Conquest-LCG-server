@@ -4,7 +4,7 @@ import random
 import pygame
 from UseInits import *
 from Phases import DeployPhase
-
+import HoldingArrays
 
 def create_planets(planet_array_objects):
     planet_names = []
@@ -150,11 +150,12 @@ class Client:
         self.c = Condition()
 
     def send_lobby(self):
+        self.c.acquire()
+        self.c.notify_all()
         message = ""
-        if self.display_name != "":
-            message += self.display_name + "#"
-        message += "BOB#STEVE"
-        message = "LOBBY#" + message
+        for i in range(len(HoldingArrays.client_array)):
+            message += "#" + HoldingArrays.client_array[i].get_display_name()
+        message = "LOBBY" + message
         self.sock.send(bytes(message, "UTF-8"))
 
     def send_display_name(self):
@@ -166,6 +167,9 @@ class Client:
 
     def set_display_name(self, name):
         self.display_name = name
+
+    def get_display_name(self):
+        return self.display_name
 
     def recv(self):
         try:
