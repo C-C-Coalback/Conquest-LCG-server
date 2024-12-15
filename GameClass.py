@@ -42,8 +42,8 @@ class Game(Thread):
     def run(self):
         print("Thread started")
         planets_in_play_list = create_planets(planet_array)
-        self.p1 = PlayerClass.Player(self.name_1, 1)
-        self.p2 = PlayerClass.Player(self.name_2, 2)
+        self.p1 = PlayerClass.Player(self.name_1, 1, self.c)
+        self.p2 = PlayerClass.Player(self.name_2, 2, self.c)
         Thread(target=self.recv_1).start()
         Thread(target=self.recv_2).start()
         Thread(target=self.send_current_board_state_loop).start()
@@ -81,7 +81,7 @@ class Game(Thread):
             pygame.time.wait(200)
             self.c.acquire()
             self.c.notify_all()
-            self.p1.set_active_position(self.stored_message_p_two)
+            self.p2.set_active_position(self.stored_message_p_two)
             self.c.release()
 
     def print_stored_1(self):

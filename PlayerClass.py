@@ -4,7 +4,7 @@ import pygame
 
 
 class Player:
-    def __init__(self, name, number):
+    def __init__(self, name, number, c):
         self.number = number
         self.name_player = name
         self.position_activated = []
@@ -18,6 +18,7 @@ class Player:
         self.victory_display = []
         self.icons_gained = [0, 0, 0]
         self.headquarters = []
+        self.c = c
         self.deck = []
         self.discard = []
         self.planets_in_play = [True, True, True, True, True, False, False]
@@ -59,17 +60,36 @@ class Player:
 
     def take_deploy_turn(self):
         while True:
-            pygame.time.wait(125)
+            pygame.time.wait(500)
+            self.c.acquire()
+            self.c.notify_all()
             current_active = self.position_activated
+            self.c.release()
             if len(current_active) > 0:
                 if current_active[0] == "PASS":
                     print("PASS NEEDED")
                     return True
                 if len(current_active) > 1:
-                    if current_active[1] == "Hand":
-                        print("Card needs to be deployed")
-                        print("Position of card: Player", current_active[0], "Hand pos:", current_active[2])
-                        return False
+                    print("GOT HERE + :", current_active)
+                    if current_active[1] == "Hand" and int(current_active[0][1]) == self.number:
+                        if int(current_active[2]) < len(self.cards):
+                            print("Card needs to be deployed")
+                            print("Position of card: Player", current_active[0], "Hand pos:", current_active[2])
+                            ret_val = self.select_planet_to_play_card(current_active[2])
+                            if ret_val != "PASS":
+                                return False
+
+    def select_planet_to_play_card(self, position):
+        while True:
+            pygame.time.wait(125)
+            current_active = self.position_activated
+            if len(current_active) > 0:
+                if current_active[0] == "PASS":
+                    return "PASS"
+                if current_active[0] == "Planet":
+                    int_planet = int(current_active[1])
+                    print("position of planet to deploy unit:", int_planet)
+                    return "SUCCESS"
 
     def print_position_active(self):
         while True:
