@@ -42,8 +42,8 @@ class Game(Thread):
     def run(self):
         print("Thread started")
         planets_in_play_list = create_planets(planet_array)
-        self.p1 = PlayerClass.Player("Abe", 1)
-        self.p2 = PlayerClass.Player("Bob", 2)
+        self.p1 = PlayerClass.Player(self.name_1, 1)
+        self.p2 = PlayerClass.Player(self.name_2, 2)
         Thread(target=self.recv_1).start()
         Thread(target=self.recv_2).start()
         Thread(target=self.send_current_board_state_loop).start()
@@ -193,6 +193,7 @@ class Game(Thread):
             message += self.p2.get_hq_for_message()
             message += self.p1.get_all_planets_for_message()
             message += self.p2.get_all_planets_for_message()
+            message = message + "#" + self.p1.get_top_card_discard() + "#" + self.p2.get_top_card_discard()
             print(message)
             self.p1.toggle_turn()
             self.current_board_state = message

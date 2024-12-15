@@ -51,6 +51,12 @@ class Player:
     def set_phase(self, new_phase):
         self.phase = new_phase
 
+    def get_top_card_discard(self):
+        if not self.discard:
+            return "NONE"
+        else:
+            return self.discard[-1]
+
     def take_deploy_turn(self):
         while True:
             pygame.time.wait(125)
