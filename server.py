@@ -1,5 +1,5 @@
 import socket
-from GameClass import Client
+from ClientClass import Client
 from threading import *
 import HoldingArrays
 
