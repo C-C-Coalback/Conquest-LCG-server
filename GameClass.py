@@ -63,7 +63,8 @@ class Game(Thread):
         self.phase = "Deploy"
         self.round_number += 1
         DeployPhase.deploy_phase(self.p1, self.p2)
-        CommandPhase.command_phase(self.p1, self.p2)
+        self.phase = "Command"
+        CommandPhase.command_phase(self.p1, self.p2, self.round_number)
 
     def play_game(self):
         pass

@@ -71,6 +71,9 @@ class Player:
             self.resources = self.resources - amount
             return True
 
+    def add_resources(self, amount):
+        self.resources += amount
+
     def take_deploy_turn(self):
         self.position_activated = []
         while True:
@@ -178,8 +181,6 @@ class Player:
                     self.set_turn(False)
                     return True
 
-
-
     def commit_warlord_to_planet(self, planet_pos):
         headquarters_list = self.get_headquarters()
         for i in range(len(headquarters_list)):
@@ -188,6 +189,18 @@ class Player:
                 self.cards_in_play[planet_pos].append(copy.deepcopy(headquarters_list[i]))
                 self.headquarters.remove(headquarters_list[i])
                 # self.commit_units_to_planet(planet_id)
+
+    def count_command_at_planet(self, planet_id):
+        command = 0
+        for i in range(len(self.cards_in_play[planet_id])):
+            print(self.cards_in_play[planet_id][i].get_command())
+            if self.cards_in_play[planet_id][i].get_ready():
+                command += self.cards_in_play[planet_id][i].get_command()
+        return command
+
+    def get_planet_name_given_position(self, planet_id):
+        return self.cards_in_play[0][planet_id]
+
 
     def print_position_active(self):
         while True:
