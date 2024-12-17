@@ -91,14 +91,20 @@ class Player:
                             card_object = FindCard.find_card(self.cards[int(current_active[2])])
                             if card_object.get_card_type() == "Army":
                                 print("Card is an army unit")
-                                ret_val = self.select_planet_to_play_card(current_active[2])
-                                if ret_val != "PASS":
-                                    return False
+                                ret_val = self.select_planet_to_play_card(card_object)
+                                if ret_val != "PASS" and ret_val != "FAIL":
+                                    print("Successfully played card")
+                                    return True
+                                print("Cancelling playing the card.")
                             if card_object.get_card_type() == "Support":
                                 print("Card is a support")
                                 ret_val = self.play_card(None, card_object)
+                                if ret_val != "PASS" and ret_val != "FAIL":
+                                    print("Successfully played card")
+                                    return True
+                                print("Cancelling playing the card.")
 
-    def select_planet_to_play_card(self, position):
+    def select_planet_to_play_card(self, card):
         while True:
             pygame.time.wait(125)
             current_active = self.position_activated
@@ -108,17 +114,36 @@ class Player:
                 if current_active[0] == "Planet":
                     int_planet = int(current_active[1])
                     print("position of planet to deploy unit:", int_planet)
-                    return "SUCCESS"
+                    return self.play_card(int_planet, card)
 
     def play_card(self, position, card):
+        self.c.acquire()
         if position is None:
             if self.spend_resources(card.get_cost()):
                 self.add_to_hq(card)
                 self.cards.remove(card.get_name())
                 print("Played card to HQ")
-                return 0
+                self.c.notify_all()
+                self.c.release()
+                return "SUCCESS"
             print("Insufficient resources")
-            return -1
+            self.c.notify_all()
+            self.c.release()
+            return "FAIL"
+        if not self.planets_in_play[position]:
+            self.c.notify_all()
+            self.c.release()
+            return "FAIL"
+        if self.spend_resources(card.get_cost()):
+            self.cards_in_play[position + 1].append(copy.deepcopy(card))
+            self.cards.remove(card.get_name())
+            self.c.notify_all()
+            self.c.release()
+            return "SUCCESS"
+        print("Insufficient resources")
+        self.c.notify_all()
+        self.c.release()
+        return "FAIL"
 
     def print_position_active(self):
         while True:
