@@ -174,23 +174,26 @@ class Game(Thread):
             pygame.time.wait(3000)
             self.c.acquire()
             self.c.notify_all()
-            message = "10246#"
-            message += str(self.p1.get_resources()) + "#" + str(self.p2.get_resources())
-            message += self.p1.get_planets_in_play_for_message()
-            message += self.p1.get_hand_for_message()
-            message += self.p2.get_hand_for_message()
-            message += self.p1.get_hq_for_message()
-            message += self.p2.get_hq_for_message()
-            message += self.p1.get_all_planets_for_message()
-            message += self.p2.get_all_planets_for_message()
-            message = message + "#" + self.p1.get_top_card_discard() + "#" + self.p2.get_top_card_discard()
-            message += "#" + self.phase + "\n" + str(self.round_number) + "\n"
-            if self.p1.has_turn:
-                message += self.name_1 + "\n" + self.p1.extra_text
-            else:
-                message += self.name_2 + "\n" + self.p2.extra_text
-            message += "#" + self.p1.bonus_boxes + "|" + self.p2.bonus_boxes
-            print(message)
-            # self.p1.toggle_turn()
-            self.current_board_state = message
+            self.update_board()
             self.c.release()
+
+    def update_board(self):
+        message = "10246#"
+        message += str(self.p1.get_resources()) + "#" + str(self.p2.get_resources())
+        message += self.p1.get_planets_in_play_for_message()
+        message += self.p1.get_hand_for_message()
+        message += self.p2.get_hand_for_message()
+        message += self.p1.get_hq_for_message()
+        message += self.p2.get_hq_for_message()
+        message += self.p1.get_all_planets_for_message()
+        message += self.p2.get_all_planets_for_message()
+        message = message + "#" + self.p1.get_top_card_discard() + "#" + self.p2.get_top_card_discard()
+        message += "#" + self.phase + "\n" + str(self.round_number) + "\n"
+        if self.p1.has_turn:
+            message += self.name_1 + "\n" + self.p1.extra_text
+        else:
+            message += self.name_2 + "\n" + self.p2.extra_text
+        message += "#" + self.p1.bonus_boxes + "|" + self.p2.bonus_boxes
+        print(message)
+        # self.p1.toggle_turn()
+        self.current_board_state = message
