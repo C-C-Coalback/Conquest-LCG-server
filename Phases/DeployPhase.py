@@ -12,6 +12,7 @@ def deploy_phase(p_one, p_two):
         p_one.set_turn(False)
         p_two.set_turn(True)
     while not p_one_passed or not p_two_passed:
-        ret_val = p_one.take_deploy_turn()
-        p_one_passed = True
-        p_two_passed = True
+        if not p_one_passed:
+            p_one_passed = p_one.take_deploy_turn()
+        if not p_two_passed:
+            p_two_passed = p_two.take_deploy_turn()

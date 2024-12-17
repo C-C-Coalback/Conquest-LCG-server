@@ -94,7 +94,7 @@ class Player:
                                 ret_val = self.select_planet_to_play_card(card_object)
                                 if ret_val != "PASS" and ret_val != "FAIL":
                                     print("Successfully played card")
-                                    return True
+                                    return False
                                 print("Cancelling playing the card.")
                             if card_object.get_card_type() == "Support":
                                 print("Card is a support")
