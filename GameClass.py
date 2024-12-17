@@ -34,6 +34,8 @@ class Game(Thread):
         self.stored_deck_2 = None
         self.p1 = None
         self.p2 = None
+        self.phase = ""
+        self.round_number = 0
         self.current_board_state = ""
         self.running = True
         self.c = Condition()
@@ -60,6 +62,8 @@ class Game(Thread):
         Thread(target=self.auto_update_stored_1).start()
         Thread(target=self.auto_update_stored_2).start()
         # Thread(target=self.temp_loop).start()
+        self.phase = "Deploy"
+        self.round_number += 1
         DeployPhase.deploy_phase(self.p1, self.p2)
 
     def play_game(self):
@@ -198,7 +202,13 @@ class Game(Thread):
             message += self.p1.get_all_planets_for_message()
             message += self.p2.get_all_planets_for_message()
             message = message + "#" + self.p1.get_top_card_discard() + "#" + self.p2.get_top_card_discard()
+            message += "#" + self.phase + "\n" + str(self.round_number) + "\n"
+            if self.p1.has_turn:
+                message += self.name_1
+            else:
+                message += self.name_2
+
             print(message)
-            self.p1.toggle_turn()
+            # self.p1.toggle_turn()
             self.current_board_state = message
             self.c.release()
