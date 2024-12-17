@@ -40,6 +40,9 @@ class Player:
         print(self.cards_in_play)
         print(self.cards)
 
+    def get_headquarters(self):
+        return self.headquarters
+
     def toggle_turn(self):
         self.has_turn = not self.has_turn
 
@@ -155,6 +158,36 @@ class Player:
         self.c.notify_all()
         self.c.release()
         return "FAIL"
+
+    def commit_warlord_step(self):
+        self.position_activated = []
+        self.set_turn(True)
+        while True:
+            pygame.time.wait(125)
+            self.c.acquire()
+            self.c.notify_all()
+            current_active = self.position_activated
+            self.c.release()
+            self.set_turn(True)
+            self.extra_text = "Commit Warlord"
+            if len(current_active) > 0:
+                if current_active[0] == "Planet":
+                    int_planet = int(current_active[1])
+                    print("position of planet to commit warlord:", int_planet)
+                    self.commit_warlord_to_planet(int_planet + 1)
+                    self.set_turn(False)
+                    return True
+
+
+
+    def commit_warlord_to_planet(self, planet_pos):
+        headquarters_list = self.get_headquarters()
+        for i in range(len(headquarters_list)):
+            if headquarters_list[i].get_card_type() == "Warlord":
+                print(headquarters_list[i].get_name())
+                self.cards_in_play[planet_pos].append(copy.deepcopy(headquarters_list[i]))
+                self.headquarters.remove(headquarters_list[i])
+                # self.commit_units_to_planet(planet_id)
 
     def print_position_active(self):
         while True:

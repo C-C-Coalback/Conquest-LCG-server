@@ -3,8 +3,8 @@ import PlayerClass
 import random
 import pygame
 from UseInits import *
-from Phases import DeployPhase
-import HoldingArrays
+from Phases import DeployPhase, CommandPhase
+# import HoldingArrays
 
 
 def create_planets(planet_array_objects):
@@ -63,6 +63,7 @@ class Game(Thread):
         self.phase = "Deploy"
         self.round_number += 1
         DeployPhase.deploy_phase(self.p1, self.p2)
+        CommandPhase.command_phase(self.p1, self.p2)
 
     def play_game(self):
         pass
