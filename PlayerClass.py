@@ -1,6 +1,7 @@
 import FindCard
 from random import shuffle
 import pygame
+import copy
 
 
 class Player:
@@ -58,6 +59,13 @@ class Player:
         else:
             return self.discard[-1]
 
+    def spend_resources(self, amount):
+        if amount > self.resources:
+            return False
+        else:
+            self.resources = self.resources - amount
+            return True
+
     def take_deploy_turn(self):
         while True:
             pygame.time.wait(500)
@@ -71,18 +79,24 @@ class Player:
                     return True
                 if len(current_active) > 1:
                     print("GOT HERE + :", current_active)
-                    if current_active[1] == "Hand" and int(current_active[0][1]) == self.number:
+                    if current_active[1] == "Hand" and int((current_active[0])[1]) == self.number:
                         if int(current_active[2]) < len(self.cards):
                             print("Card needs to be deployed")
                             print("Position of card: Player", current_active[0], "Hand pos:", current_active[2])
                             self.c.acquire()
                             self.c.notify_all()
-                            self.position_activated = ""
+                            self.position_activated = []
                             self.c.notify_all()
                             self.c.release()
-                            ret_val = self.select_planet_to_play_card(current_active[2])
-                            if ret_val != "PASS":
-                                return False
+                            card_object = FindCard.find_card(self.cards[int(current_active[2])])
+                            if card_object.get_card_type() == "Army":
+                                print("Card is an army unit")
+                                ret_val = self.select_planet_to_play_card(current_active[2])
+                                if ret_val != "PASS":
+                                    return False
+                            if card_object.get_card_type() == "Support":
+                                print("Card is a support")
+                                ret_val = self.play_card(None, card_object)
 
     def select_planet_to_play_card(self, position):
         while True:
@@ -96,12 +110,25 @@ class Player:
                     print("position of planet to deploy unit:", int_planet)
                     return "SUCCESS"
 
+    def play_card(self, position, card):
+        if position is None:
+            if self.spend_resources(card.get_cost()):
+                self.add_to_hq(card)
+                self.cards.remove(card.get_name())
+                print("Played card to HQ")
+                return 0
+            print("Insufficient resources")
+            return -1
+
     def print_position_active(self):
         while True:
             t = input("")
             if t == "STOP":
                 break
             print("Player", self.number, "active position:", self.position_activated)
+
+    def add_to_hq(self, card_object):
+        self.headquarters.append(copy.deepcopy(card_object))
 
     def toggle_initiative(self):
         self.has_initiative = not self.has_initiative
