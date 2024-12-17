@@ -59,8 +59,6 @@ class Game(Thread):
         self.p2.toggle_turn()
         self.p2.toggle_initiative()
         Thread(target=self.auto_update_board_loop).start()
-        Thread(target=self.auto_update_stored_1).start()
-        Thread(target=self.auto_update_stored_2).start()
         # Thread(target=self.temp_loop).start()
         self.phase = "Deploy"
         self.round_number += 1
@@ -71,24 +69,6 @@ class Game(Thread):
 
     def temp_loop(self):
         self.p1.print_position_active()
-
-    def auto_update_stored_1(self):
-        while self.running:
-            pygame.time.wait(500)
-            self.c.acquire()
-            self.c.notify_all()
-            self.p1.set_active_position(self.stored_message_p_one)
-            print("value of p1 class", self.p1.position_activated)
-            print("value of game class for p1", self.stored_message_p_one)
-            self.c.release()
-
-    def auto_update_stored_2(self):
-        while self.running:
-            pygame.time.wait(500)
-            self.c.acquire()
-            self.c.notify_all()
-            self.p2.set_active_position(self.stored_message_p_two)
-            self.c.release()
 
     def print_stored_1(self):
         print(self.stored_message_p_one)
@@ -128,6 +108,7 @@ class Game(Thread):
                 self.stored_message_p_one = message.split(sep="#")
                 string_for_further_use = self.stored_message_p_one
                 print("Stored message:", self.stored_message_p_one)
+                self.p1.set_active_position(self.stored_message_p_one)
                 self.c.notify_all()
                 self.c.release()
                 if len(string_for_further_use) > 0:
@@ -155,6 +136,7 @@ class Game(Thread):
                 self.stored_message_p_two = message.split(sep="#")
                 string_for_further_use = self.stored_message_p_two
                 print("Stored message:", self.stored_message_p_two)
+                self.p2.set_active_position(self.stored_message_p_two)
                 self.c.notify_all()
                 self.c.release()
                 if len(string_for_further_use) > 0:

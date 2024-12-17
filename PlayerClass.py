@@ -75,6 +75,11 @@ class Player:
                         if int(current_active[2]) < len(self.cards):
                             print("Card needs to be deployed")
                             print("Position of card: Player", current_active[0], "Hand pos:", current_active[2])
+                            self.c.acquire()
+                            self.c.notify_all()
+                            self.position_activated = ""
+                            self.c.notify_all()
+                            self.c.release()
                             ret_val = self.select_planet_to_play_card(current_active[2])
                             if ret_val != "PASS":
                                 return False
