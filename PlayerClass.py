@@ -69,6 +69,7 @@ class Player:
             return True
 
     def take_deploy_turn(self):
+        self.position_activated = []
         while True:
             pygame.time.wait(500)
             self.c.acquire()
