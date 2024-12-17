@@ -24,6 +24,8 @@ class Player:
         self.discard = []
         self.planets_in_play = [True, True, True, True, True, False, False]
         self.cards_in_play = [[] for _ in range(8)]
+        self.bonus_boxes = ""
+        self.extra_text = "No advice"
 
     def setup_player(self, deck_list, planet_array):
         self.headquarters.append(FindCard.find_card(deck_list[1]))
@@ -73,9 +75,12 @@ class Player:
             self.c.notify_all()
             current_active = self.position_activated
             self.c.release()
+            self.set_turn(True)
+            self.extra_text = "Deploy turn"
             if len(current_active) > 0:
                 if current_active[0] == "PASS":
                     print("PASS NEEDED")
+                    self.set_turn(False)
                     return True
                 if len(current_active) > 1:
                     print("GOT HERE + :", current_active)
@@ -83,6 +88,7 @@ class Player:
                         if int(current_active[2]) < len(self.cards):
                             print("Card needs to be deployed")
                             print("Position of card: Player", current_active[0], "Hand pos:", current_active[2])
+                            self.bonus_boxes = "Hand/" + current_active[0] + "/" + current_active[2] + "/green"
                             self.c.acquire()
                             self.c.notify_all()
                             self.position_activated = []
@@ -91,14 +97,18 @@ class Player:
                             card_object = FindCard.find_card(self.cards[int(current_active[2])])
                             if card_object.get_card_type() == "Army":
                                 print("Card is an army unit")
+                                self.extra_text = "Choose planet"
                                 ret_val = self.select_planet_to_play_card(card_object)
+                                self.bonus_boxes = ""
                                 if ret_val != "PASS" and ret_val != "FAIL":
                                     print("Successfully played card")
+                                    self.set_turn(False)
                                     return False
                                 print("Cancelling playing the card.")
                             if card_object.get_card_type() == "Support":
                                 print("Card is a support")
                                 ret_val = self.play_card(None, card_object)
+                                self.bonus_boxes = ""
                                 if ret_val != "PASS" and ret_val != "FAIL":
                                     print("Successfully played card")
                                     return True

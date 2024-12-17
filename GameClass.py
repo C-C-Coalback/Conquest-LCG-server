@@ -186,9 +186,9 @@ class Game(Thread):
             message = message + "#" + self.p1.get_top_card_discard() + "#" + self.p2.get_top_card_discard()
             message += "#" + self.phase + "\n" + str(self.round_number) + "\n"
             if self.p1.has_turn:
-                message += self.name_1
+                message += self.name_1 + "\n" + self.p1.extra_text
             else:
-                message += self.name_2
+                message += self.name_2 + "\n" + self.p2.extra_text
 
             print(message)
             # self.p1.toggle_turn()
