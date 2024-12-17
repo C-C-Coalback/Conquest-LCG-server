@@ -189,7 +189,7 @@ class Game(Thread):
                 message += self.name_1 + "\n" + self.p1.extra_text
             else:
                 message += self.name_2 + "\n" + self.p2.extra_text
-
+            message += "#" + self.p1.bonus_boxes + "|" + self.p2.bonus_boxes
             print(message)
             # self.p1.toggle_turn()
             self.current_board_state = message
