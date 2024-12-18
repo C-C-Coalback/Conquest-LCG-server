@@ -13,6 +13,4 @@ The Conquest-LCG-server will be a server that handles all games of Conquest curr
   
   -Closing a game when it is complete.
 
-Currently the server can send the game to the client and accept positions clicked on by the client. It is also capable of handling the deploy phase, though only the very basic functions, such as playing a support to the HQ, or playing an army unit to a planet. No card specific interactions implemented.
-
-The command phase has now also been implemented.
+Update: Well, that was fast. The core mechanics are (once again) implemented. No card specific effects are here yet (Although I might have copied some over from the original repo and just forgotten). Since this means that the game can be played online, I am calling this version 0.5. Very happy with it.
