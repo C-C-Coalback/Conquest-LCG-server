@@ -141,13 +141,15 @@ def resolve_battle(p_one, p_two, planet_id, first_planet):
         print(p_two.get_name_player(), "wins the battle")
         # resolve_planet_battle_effect(p_one, p_two, planet_id, game_screen)
         if first_planet:
-            print("Planet needs to be captured")
+            p_one.retreat_all_at_planet(planet_id)
+            p_one.capture_planet(planet_id)
     elif not player_one_check and player_two_check:
         print(p_two.get_name_player(), "has units,", p_one.get_name_player(), "doesn't")
         print(p_two.get_name_player(), "wins the battle")
         # resolve_planet_battle_effect(p_two, p_one, planet_id, game_screen)
         if first_planet:
-            print("Planet needs to be captured")
+            p_two.retreat_all_at_planet(planet_id)
+            p_two.capture_planet(planet_id)
         elif not player_one_check and not player_two_check:
             print("Neither player has units")
     if first_planet:
