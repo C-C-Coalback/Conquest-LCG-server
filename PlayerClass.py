@@ -43,6 +43,9 @@ class Player:
     def get_headquarters(self):
         return self.headquarters
 
+    def toggle_planet_in_play(self, planet_id):
+        self.planets_in_play[planet_id] = not self.planets_in_play[planet_id]
+
     def toggle_turn(self):
         self.has_turn = not self.has_turn
 
@@ -73,6 +76,14 @@ class Player:
 
     def add_resources(self, amount):
         self.resources += amount
+
+    def check_if_units_present(self, planet_id):
+        print("Checking for cards at:", self.cards_in_play[0][planet_id])
+        if not self.cards_in_play[planet_id + 1]:
+            print("No cards present.")
+            return 0
+        print("Cards present.")
+        return 1
 
     def check_for_warlord(self, planet_id):
         print("Looking for warlord at:", self.cards_in_play[0][planet_id])
