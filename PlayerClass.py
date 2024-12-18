@@ -43,6 +43,12 @@ class Player:
     def get_headquarters(self):
         return self.headquarters
 
+    def get_number(self):
+        return self.number
+
+    def get_name_player(self):
+        return self.name_player
+
     def toggle_planet_in_play(self, planet_id):
         self.planets_in_play[planet_id] = not self.planets_in_play[planet_id]
 
@@ -228,6 +234,9 @@ class Player:
     def get_planet_name_given_position(self, planet_id):
         return self.cards_in_play[0][planet_id]
 
+    def print_cards_at_planet(self, planet_id):
+        for j in range(len(self.cards_in_play[planet_id + 1])):
+            print(self.cards_in_play[planet_id + 1][j].get_name())
 
     def print_position_active(self):
         while True:
