@@ -175,7 +175,7 @@ class Game(Thread):
 
     def auto_update_board_loop(self):
         while self.running:
-            pygame.time.wait(3000)
+            pygame.time.wait(500)
             self.c.acquire()
             self.c.notify_all()
             self.update_board()
@@ -198,6 +198,8 @@ class Game(Thread):
         else:
             message += self.name_2 + "\n" + self.p2.extra_text
         message += "#" + self.p1.bonus_boxes + "|" + self.p2.bonus_boxes
+        message += "#" + self.p1.get_victory_display_for_message()
+        message += "#" + self.p2.get_victory_display_for_message()
         print(message)
         # self.p1.toggle_turn()
         self.current_board_state = message

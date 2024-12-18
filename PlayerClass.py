@@ -461,6 +461,16 @@ class Player:
                 message += "/"
         return message
 
+    def get_victory_display_for_message(self):
+        if len(self.victory_display) == 0:
+            return "NONE"
+        message = ""
+        for i in range(len(self.victory_display)):
+            message += self.victory_display[i].get_name()
+            if i != len(self.victory_display) - 1:
+                message += "/"
+        return message
+
     def get_all_planets_for_message(self):
         message = ""
         planet_num = 1
@@ -468,7 +478,6 @@ class Player:
             message += self.get_one_planet_for_message(planet_num)
             planet_num += 1
         return message
-
 
     def get_one_planet_for_message(self, planet_pos):
         message = "#"
