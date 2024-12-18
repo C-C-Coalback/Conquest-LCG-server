@@ -24,6 +24,8 @@ def combat_turn(attacker, defender, planet_id):
                         pos_unit = int(current_active[3])
                         if len(attacker.cards_in_play[planet_id + 1]) > pos_unit:
                             print("Valid unit.")
+                            if attacker.check_ready_pos(planet_id, pos_unit):
+                                print("Unit is ready. Selecting as attacker")
 
 
 
