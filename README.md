@@ -14,3 +14,5 @@ The Conquest-LCG-server will be a server that handles all games of Conquest curr
   -Closing a game when it is complete.
 
 Update: Well, that was fast. The core mechanics are (once again) implemented. No card specific effects are here yet (Although I might have copied some over from the original repo and just forgotten). Since this means that the game can be played online, I am calling this version 0.5. Very happy with it.
+
+On the to-do list: There need to be standardised functions when the program is waiting for a particular input, such as a card in a hand, a card in play, etc etc. Currentlz, due to the fairly large size of this code, it is bloating files greatly.
