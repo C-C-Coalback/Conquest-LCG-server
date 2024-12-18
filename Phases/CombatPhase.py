@@ -10,6 +10,9 @@ def select_attacker(attacker, planet_id):
         attacker.set_turn(True)
         attacker.extra_text = "Combat turn"
         print(current_active)
+        if len(current_active) == 1:
+            if current_active[0] == "PASS":
+                return -1
         if len(current_active) == 4:
             if current_active[1] == "PLAY":
                 if int(current_active[0][1]) == attacker.get_number():
@@ -69,6 +72,8 @@ def combat_turn(attacker, defender, planet_id):
     defender.position_activated = []
     defender.set_turn(False)
     pos_attacker = select_attacker(attacker, planet_id)
+    if pos_attacker == -1:
+        return True
     pos_defender = select_defender(attacker, defender, planet_id)
     # input("COMBAT TURN:" + str(pos_attacker) + "ATTACKS" + str(pos_defender))
     unit_dead = unit_attacks_unit(attacker, defender, planet_id, pos_attacker, pos_defender)
@@ -104,7 +109,13 @@ def combat_round(p_one, p_two, planet_id):
             p_two.set_turn(False)
             p_one_passed = combat_turn(p_one, p_two, planet_id)
             p_two_passed = combat_turn(p_two, p_one, planet_id)
-
+        else:
+            p_one.set_turn(False)
+            p_two.set_turn(True)
+            p_two_passed = combat_turn(p_two, p_one, planet_id)
+            p_one_passed = combat_turn(p_one, p_two, planet_id)
+    p_one.ready_all_at_planet(planet_id)
+    p_two.ready_all_at_planet(planet_id)
 
 def resolve_battle(p_one, p_two, planet_id, first_planet):
     player_one_check = p_one.check_if_units_present(planet_id)

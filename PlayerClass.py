@@ -146,6 +146,13 @@ class Player:
     def exhaust_given_pos(self, planet_id, unit_id):
         self.cards_in_play[planet_id + 1][unit_id].exhaust_card()
 
+    def ready_all_at_planet(self, planet_id):
+        for i in range(len(self.cards_in_play[planet_id + 1])):
+            self.ready_given_pos(planet_id, i)
+
+    def ready_given_pos(self, planet_id, unit_id):
+        self.cards_in_play[planet_id + 1][unit_id].ready_card()
+
     def check_for_warlord(self, planet_id):
         print("Looking for warlord at:", self.cards_in_play[0][planet_id])
         if not self.cards_in_play[planet_id + 1]:
