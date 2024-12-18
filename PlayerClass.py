@@ -83,6 +83,35 @@ class Player:
     def add_resources(self, amount):
         self.resources += amount
 
+    def check_if_warlord(self, planet_id, unit_id):
+        if self.cards_in_play[planet_id + 1][unit_id].get_card_type() == "Warlord":
+            return True
+        return False
+
+    def bloody_warlord_given_pos(self, planet_id, unit_id):
+        self.cards_in_play[planet_id + 1][unit_id].bloody_warlord()
+        self.retreat_warlord()
+
+    def retreat_warlord(self):
+        for i in range(len(self.cards_in_play[0])):
+            if not self.cards_in_play[i + 1]:
+                pass
+            else:
+                j = 0
+                while j < len(self.cards_in_play[i + 1]):
+                    print("TEST", self.cards_in_play[0][i], "planet", i)
+                    print(self.cards_in_play[0])
+                    print(len(self.cards_in_play[i + 1]))
+                    if self.cards_in_play[i + 1][j].get_card_type() == "Warlord":
+                        self.retreat_unit(i, j)
+                        j = j - 1
+                    j = j + 1
+
+    def retreat_unit(self, planet_id, unit_id):
+        # print("Name of card:", self.cards_in_play[planet_id + 1][unit_id].get_name())
+        self.headquarters.append(copy.deepcopy(self.cards_in_play[planet_id + 1][unit_id]))
+        del self.cards_in_play[planet_id + 1][unit_id]
+
     def check_if_units_present(self, planet_id):
         print("Checking for cards at:", self.cards_in_play[0][planet_id])
         if not self.cards_in_play[planet_id + 1]:
@@ -177,6 +206,7 @@ class Player:
                                 self.bonus_boxes = ""
                                 if ret_val != "PASS" and ret_val != "FAIL":
                                     print("Successfully played card")
+                                    self.set_turn(False)
                                     return False
                                 print("Cancelling playing the card.")
 
@@ -257,6 +287,11 @@ class Player:
             if self.cards_in_play[planet_id][i].get_ready():
                 command += self.cards_in_play[planet_id][i].get_command()
         return command
+
+    def remove_card_from_play(self, planet_num, card_pos):
+        # card_object = self.cards_in_play[planet_num + 1][card_pos]
+        # self.discard_object(card_object)
+        del self.cards_in_play[planet_num + 1][card_pos]
 
     def get_planet_name_given_position(self, planet_id):
         return self.cards_in_play[0][planet_id]

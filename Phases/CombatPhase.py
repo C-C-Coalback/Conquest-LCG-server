@@ -72,6 +72,11 @@ def combat_turn(attacker, defender, planet_id):
     pos_defender = select_defender(attacker, defender, planet_id)
     # input("COMBAT TURN:" + str(pos_attacker) + "ATTACKS" + str(pos_defender))
     unit_dead = unit_attacks_unit(attacker, defender, planet_id, pos_attacker, pos_defender)
+    if unit_dead:
+        if defender.check_if_warlord(planet_id, pos_defender):
+            defender.bloody_warlord_given_pos(planet_id, pos_defender)
+        else:
+            defender.remove_card_from_play(planet_id, pos_defender)
     return False
 
 
