@@ -70,7 +70,7 @@ def combat_turn(attacker, defender, planet_id):
     defender.set_turn(False)
     pos_attacker = select_attacker(attacker, planet_id)
     pos_defender = select_defender(attacker, defender, planet_id)
-    input("COMBAT TURN:" + str(pos_attacker) + "ATTACKS" + str(pos_defender))
+    # input("COMBAT TURN:" + str(pos_attacker) + "ATTACKS" + str(pos_defender))
     unit_dead = unit_attacks_unit(attacker, defender, planet_id, pos_attacker, pos_defender)
     return False
 
@@ -106,7 +106,6 @@ def resolve_battle(p_one, p_two, planet_id, first_planet):
     player_two_check = p_two.check_if_units_present(planet_id)
     while player_one_check and player_two_check:
         print("Combat round happens!")
-        input("Holder")
         combat_round(p_one, p_two, planet_id)
         player_one_check = p_one.check_if_units_present(planet_id)
         player_two_check = p_two.check_if_units_present(planet_id)

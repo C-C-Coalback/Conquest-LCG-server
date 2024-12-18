@@ -177,7 +177,7 @@ class Player:
                                 self.bonus_boxes = ""
                                 if ret_val != "PASS" and ret_val != "FAIL":
                                     print("Successfully played card")
-                                    return True
+                                    return False
                                 print("Cancelling playing the card.")
 
     def select_planet_to_play_card(self, card):
@@ -247,6 +247,7 @@ class Player:
                 print(headquarters_list[i].get_name())
                 self.cards_in_play[planet_pos].append(copy.deepcopy(headquarters_list[i]))
                 self.headquarters.remove(headquarters_list[i])
+                return True
                 # self.commit_units_to_planet(planet_id)
 
     def count_command_at_planet(self, planet_id):
