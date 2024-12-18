@@ -159,7 +159,7 @@ class Game(Thread):
     def send_current_board_state_loop(self):
         try:
             while self.running:
-                _ = pygame.time.wait(3000)
+                _ = pygame.time.wait(500)
                 self.c.acquire()
                 self.c.notify_all()
                 message = self.current_board_state
