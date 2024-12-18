@@ -53,11 +53,15 @@ def select_defender(attacker, defender, planet_id):
                             return pos_defender
 
 def unit_attacks_unit(att, defe, planet_id, att_pos, defe_pos):
+    att.set_turn(False)
+    defe.set_turn(True)
     attack_value = att.get_attack_given_pos(planet_id, att_pos)
     # if att.get_cards_in_play()[planet_id + 1][att_pos].get_name() == "Tankbusta Bommaz":
     #     if defe.get_cards_in_play()[planet_id + 1][defe_pos].check_for_a_trait("Vehicle."):
     #         attack_value = 2 * attack_value
     damage_too_great = defe.assign_damage_to_pos(planet_id, defe_pos, attack_value)
+    att.set_turn(True)
+    defe.set_turn(False)
     if damage_too_great:
         print("Card must be discarded")
         # input("Hold attack")

@@ -1,4 +1,6 @@
 #PYGAME SHIELD WINDOW NEEDS FIXING
+import pygame
+
 
 class Card:
     def __init__(self, name, text, traits, cost, faction, loyalty, shields, card_type, unique, image_name,
@@ -165,26 +167,44 @@ class UnitCard(Card):
     def shield_window(self, player, amount):
         print(self.get_name(), "taking", amount, "damage.")
         print("GOT HERE")
+        player.set_turn(True)
+        player.extra_text = "Shield window"
+        player.position_activated = []
         while True:
-            position = -1
-            #NEEDS FIXING : POSITION HAS TO BE DECIDED FROM USER INPUT
-            if position == -1:
-                print("No shields used")
-                return amount
-            shield = player.get_shields_given_pos(position)
-            if shield == -1:
-                input("Card somehow found in hand but not in database.")
-            elif shield == 0:
-                print("Card has no shields on it. Use something else.")
-            else:
-                player.discard_card_from_hand(position)
-                print("shield value:", shield)
-                amount = int(amount)
-                shield = int(shield)
-                amount = amount - shield
-                if amount < 0:
-                    amount = 0
-            return amount
+            pygame.time.wait(500)
+            player.c.acquire()
+            player.c.notify_all()
+            current_active = player.position_activated
+            player.c.release()
+            if len(current_active) > 0:
+                if current_active[0] == "PASS":
+                    print("No shields used")
+                    player.set_turn(False)
+                    return amount
+                if len(current_active) > 1:
+                    print("GOT HERE + :", current_active)
+                    if current_active[1] == "Hand" and int((current_active[0])[1]) == player.number:
+                        if int(current_active[2]) < len(player.cards):
+                            print("Attempting to shield")
+                            print("Position of card: Player", current_active[0], "Hand pos:", current_active[2])
+                            position = int(current_active[2])
+                            if position == -1:
+                                print("No shields used")
+                                return amount
+                            shield = player.get_shields_given_pos(position)
+                            if shield == -1:
+                                input("Card somehow found in hand but not in database.")
+                            elif shield == 0:
+                                print("Card has no shields on it. Use something else.")
+                            else:
+                                player.discard_card_from_hand(position)
+                                print("shield value:", shield)
+                                amount = int(amount)
+                                shield = int(shield)
+                                amount = amount - shield
+                                if amount < 0:
+                                    amount = 0
+                                return amount
 
     def assign_damage(self, amount):
         self.damage = self.damage + amount

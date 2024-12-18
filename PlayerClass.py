@@ -89,6 +89,15 @@ class Player:
             return True
         return False
 
+    def discard_card_from_hand(self, card_pos):
+        self.discard.append(self.cards[card_pos])
+        del self.cards[card_pos]
+
+    def get_shields_given_pos(self, pos_in_hand):
+        shield_card_name = self.cards[pos_in_hand]
+        card_object = FindCard.find_card(shield_card_name)
+        return card_object.get_shields()
+
     def bloody_warlord_given_pos(self, planet_id, unit_id):
         self.cards_in_play[planet_id + 1][unit_id].bloody_warlord()
         self.retreat_warlord()
@@ -251,14 +260,14 @@ class Player:
 
     def take_deploy_turn(self):
         self.position_activated = []
+        self.set_turn(True)
+        self.extra_text = "Deploy turn"
         while True:
             pygame.time.wait(500)
             self.c.acquire()
             self.c.notify_all()
             current_active = self.position_activated
             self.c.release()
-            self.set_turn(True)
-            self.extra_text = "Deploy turn"
             if len(current_active) > 0:
                 if current_active[0] == "PASS":
                     print("PASS NEEDED")
