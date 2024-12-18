@@ -1,14 +1,14 @@
 import pygame
 
 def select_attacker(attacker, planet_id):
+    attacker.extra_text = "Combat turn\nChoose Attacker"
+    attacker.set_turn(True)
     while True:
         pygame.time.wait(500)
         attacker.c.acquire()
         attacker.c.notify_all()
         current_active = attacker.position_activated
         attacker.c.release()
-        attacker.set_turn(True)
-        attacker.extra_text = "Combat turn"
         print(current_active)
         if len(current_active) == 1:
             if current_active[0] == "PASS":
@@ -30,14 +30,14 @@ def select_attacker(attacker, planet_id):
                                 return pos_attacker
 
 def select_defender(attacker, defender, planet_id):
+    attacker.extra_text = "Combat turn\nChoose Defender"
+    attacker.set_turn(True)
     while True:
         pygame.time.wait(500)
         attacker.c.acquire()
         attacker.c.notify_all()
         current_active = attacker.position_activated
         attacker.c.release()
-        attacker.set_turn(True)
-        attacker.extra_text = "Combat turn"
         print(current_active)
         if len(current_active) == 4:
             if current_active[1] == "PLAY":
