@@ -1,4 +1,5 @@
 import pygame
+from Phases.PlanetBattleAbilities import resolve_planet_battle_effect
 
 def select_attacker(attacker, planet_id):
     attacker.extra_text = "Combat turn\nChoose Attacker"
@@ -143,14 +144,14 @@ def resolve_battle(p_one, p_two, planet_id, first_planet):
     if player_one_check and not player_two_check:
         print(p_one.get_name_player(), "has units,", p_two.get_name_player(), "doesn't")
         print(p_two.get_name_player(), "wins the battle")
-        # resolve_planet_battle_effect(p_one, p_two, planet_id, game_screen)
+        resolve_planet_battle_effect(p_one, p_two, planet_id)
         if first_planet:
             p_one.retreat_all_at_planet(planet_id)
             p_one.capture_planet(planet_id)
     elif not player_one_check and player_two_check:
         print(p_two.get_name_player(), "has units,", p_one.get_name_player(), "doesn't")
         print(p_two.get_name_player(), "wins the battle")
-        # resolve_planet_battle_effect(p_two, p_one, planet_id, game_screen)
+        resolve_planet_battle_effect(p_two, p_one, planet_id)
         if first_planet:
             p_two.retreat_all_at_planet(planet_id)
             p_two.capture_planet(planet_id)
