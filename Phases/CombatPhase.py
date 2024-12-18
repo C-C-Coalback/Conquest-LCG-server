@@ -1,10 +1,6 @@
 import pygame
 
-def combat_turn(attacker, defender, planet_id):
-    print(attacker.get_name_player(), "\'s turn to attack")
-    attacker.position_activated = []
-    attacker.set_turn(True)
-    defender.set_turn(False)
+def select_attacker(attacker, planet_id):
     while True:
         pygame.time.wait(500)
         attacker.c.acquire()
@@ -26,6 +22,43 @@ def combat_turn(attacker, defender, planet_id):
                             print("Valid unit.")
                             if attacker.check_ready_pos(planet_id, pos_unit):
                                 print("Unit is ready. Selecting as attacker")
+                                pos_attacker = pos_unit
+                                return pos_attacker
+
+def select_defender(attacker, defender, planet_id):
+    while True:
+        pygame.time.wait(500)
+        attacker.c.acquire()
+        attacker.c.notify_all()
+        current_active = attacker.position_activated
+        attacker.c.release()
+        attacker.set_turn(True)
+        attacker.extra_text = "Combat turn"
+        print(current_active)
+        if len(current_active) == 4:
+            if current_active[1] == "PLAY":
+                if int(current_active[0][1]) == defender.get_number():
+                    print("Correct player and is in play. Advancing.")
+                    pos_planet = int(current_active[2])
+                    if pos_planet == planet_id:
+                        print("Correct planet.")
+                        pos_unit = int(current_active[3])
+                        if len(defender.cards_in_play[planet_id + 1]) > pos_unit:
+                            print("Valid unit. Selecting as defender,")
+                            pos_defender = pos_unit
+                            return pos_defender
+
+def combat_turn(attacker, defender, planet_id):
+    print(attacker.get_name_player(), "\'s turn to attack")
+    attacker.position_activated = []
+    attacker.set_turn(True)
+    defender.position_activated = []
+    defender.set_turn(False)
+    pos_attacker = select_attacker(attacker, planet_id)
+    pos_defender = select_defender(attacker, defender, planet_id)
+    input("COMBAT TURN:" + str(pos_attacker) + "ATTACKS" + str(pos_defender))
+
+
 
 
 
