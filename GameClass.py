@@ -60,15 +60,16 @@ class Game(Thread):
         self.p2.toggle_initiative()
         Thread(target=self.auto_update_board_loop).start()
         # Thread(target=self.temp_loop).start()
-        self.phase = "Deploy"
-        self.round_number += 1
-        DeployPhase.deploy_phase(self.p1, self.p2)
-        self.phase = "Command"
-        CommandPhase.command_phase(self.p1, self.p2, self.round_number)
-        self.phase = "Combat"
-        CombatPhase.combat_phase(self.p1, self.p2, self.round_number)
-        self.phase = "Headquarters"
-        HeadquartersPhase.headquarters_phase(self.p1, self.p2, self.round_number)
+        for i in range(7):
+            self.phase = "Deploy"
+            self.round_number += 1
+            DeployPhase.deploy_phase(self.p1, self.p2)
+            self.phase = "Command"
+            CommandPhase.command_phase(self.p1, self.p2, self.round_number)
+            self.phase = "Combat"
+            CombatPhase.combat_phase(self.p1, self.p2, self.round_number)
+            self.phase = "Headquarters"
+            HeadquartersPhase.headquarters_phase(self.p1, self.p2, self.round_number)
 
     def play_game(self):
         pass
