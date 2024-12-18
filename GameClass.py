@@ -3,7 +3,7 @@ import PlayerClass
 import random
 import pygame
 from UseInits import *
-from Phases import DeployPhase, CommandPhase, CombatPhase
+from Phases import DeployPhase, CommandPhase, CombatPhase, HeadquartersPhase
 # import HoldingArrays
 
 
@@ -67,6 +67,8 @@ class Game(Thread):
         CommandPhase.command_phase(self.p1, self.p2, self.round_number)
         self.phase = "Combat"
         CombatPhase.combat_phase(self.p1, self.p2, self.round_number)
+        self.phase = "Headquarters"
+        HeadquartersPhase.headquarters_phase(self.p1, self.p2, self.round_number)
 
     def play_game(self):
         pass

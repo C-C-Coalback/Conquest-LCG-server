@@ -147,6 +147,15 @@ class Player:
     def exhaust_given_pos(self, planet_id, unit_id):
         self.cards_in_play[planet_id + 1][unit_id].exhaust_card()
 
+    def ready_all_in_headquarters(self):
+        for i in range(len(self.headquarters)):
+            self.headquarters[i].ready_card()
+
+    def ready_all_in_play(self):
+        for i in range(len(self.cards_in_play[0])):
+            self.ready_all_at_planet(i)
+        self.ready_all_in_headquarters()
+
     def ready_all_at_planet(self, planet_id):
         for i in range(len(self.cards_in_play[planet_id + 1])):
             self.ready_given_pos(planet_id, i)
@@ -460,6 +469,9 @@ class Player:
             if i != len(self.headquarters) - 1:
                 message += "/"
         return message
+
+    def increment_round_number(self):
+        self.round_number += 1
 
     def get_victory_display_for_message(self):
         if len(self.victory_display) == 0:
