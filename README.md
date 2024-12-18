@@ -9,7 +9,7 @@ The Conquest-LCG-server will be a server that handles all games of Conquest curr
 
   -Actually updating the game. (Partially complete, under active development.)
   
-  -Sending the current board-state back to the users. (Mostly complete, cards in victory display are not sent. Also currently both players hands are shown, even though really each player should only be shown their own hand.)
+  -Sending the current board-state back to the users. (Mostly complete, currently both players hands are shown, even though really each player should only be shown their own hand.)
   
   -Closing a game when it is complete.
 
