@@ -76,7 +76,7 @@ def combat_turn(attacker, defender, planet_id):
         if defender.check_if_warlord(planet_id, pos_defender):
             defender.bloody_warlord_given_pos(planet_id, pos_defender)
         else:
-            defender.remove_card_from_play(planet_id, pos_defender)
+            defender.add_card_in_play_to_discard(planet_id, pos_defender)
     return False
 
 

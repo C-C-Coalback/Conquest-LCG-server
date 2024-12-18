@@ -293,6 +293,11 @@ class Player:
         # self.discard_object(card_object)
         del self.cards_in_play[planet_num + 1][card_pos]
 
+    def add_card_in_play_to_discard(self, planet_num, card_pos):
+        card_name = self.cards_in_play[planet_num + 1][card_pos].get_name()
+        self.discard.append(card_name)
+        self.remove_card_from_play(planet_num, card_pos)
+
     def get_planet_name_given_position(self, planet_id):
         return self.cards_in_play[0][planet_id]
 
