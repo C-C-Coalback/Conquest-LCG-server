@@ -153,6 +153,35 @@ class Player:
     def ready_given_pos(self, planet_id, unit_id):
         self.cards_in_play[planet_id + 1][unit_id].ready_card()
 
+    def retreat_combat_window(self, planet_id):
+        self.position_activated = []
+        while True:
+            pygame.time.wait(500)
+            self.c.acquire()
+            self.c.notify_all()
+            current_active = self.position_activated
+            self.c.release()
+            self.set_turn(True)
+            self.extra_text = "Retreat window"
+            print(current_active)
+            if len(current_active) == 1:
+                if current_active[0] == "PASS":
+                    self.set_turn(False)
+                    return True
+            if len(current_active) == 4:
+                if current_active[1] == "PLAY":
+                    if int(current_active[0][1]) == self.get_number():
+                        print("Correct player and is in play. Advancing.")
+                        pos_planet = int(current_active[2])
+                        if pos_planet == planet_id:
+                            print("Correct planet.")
+                            pos_unit = int(current_active[3])
+                            if len(self.get_cards_in_play()[planet_id + 1]) > pos_unit:
+                                print("Valid unit.")
+                                self.exhaust_given_pos(planet_id, pos_unit)
+                                self.retreat_unit(planet_id, pos_unit)
+                                self.position_activated = []
+
     def check_for_warlord(self, planet_id):
         print("Looking for warlord at:", self.cards_in_play[0][planet_id])
         if not self.cards_in_play[planet_id + 1]:
