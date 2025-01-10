@@ -1,3 +1,7 @@
+# Important
+I am trying to get a website working first before I do the rest of this. This is proving incredibly difficult.
+The repo for the website will be private until I am comfortable with releasing it.
+
 # Conquest-LCG-server
 The Conquest-LCG-server will be a server that handles all games of Conquest currently being played. This includes:
 
