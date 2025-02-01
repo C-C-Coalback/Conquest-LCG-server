@@ -6,6 +6,10 @@ The repo for the website will be private until I am comfortable with releasing i
 The website is getting there! The lobby is fully working, and there is a bunch of chat rooms available. The next step is to add the actual game.
 I might take a small detour and implement deck-building though; while [conquestdb](https://conquestdb.com/) already exists, it would be kinda annoying to port decks over.
 
+# Update (01/02/2025)
+Website is coming along nicely. I am keeping this up for sentimental reasons, but it shall not be worked on.
+This repo is now entirely defunct. The project is being continued at the repo for [the website](https://github.com/C-C-Coalback/Conquest-LCG-Site)
+
 # Conquest-LCG-server
 The Conquest-LCG-server will be a server that handles all games of Conquest currently being played. This includes:
 
